@@ -1,95 +1,127 @@
 {
-  "agents": {
-    "defaults": {
-      "workspace": "~/.openclaw/workspace",
-      "model": "anthropic/claude-sonnet-4-6",
-      "userTimezone": "Europe/Lisbon",
-      "timeFormat": "24",
-      "heartbeat": {
-        "prompt": "Run your heartbeat routine as defined in HEARTBEAT.md."
-      }
+  gateway: {
+    port: 18789,
+    mode: "local",
+    bind: "loopback",
+    auth: { mode: "token", token: "REPLACE_WITH_GENERATED_TOKEN" },
+    reload: { mode: "hybrid" },
+  },
+
+  agents: {
+    defaults: {
+      workspace: "~/.openclaw/workspace",
+      model: {
+        primary: "anthropic/claude-sonnet-4-6",
+        fallbacks: ["anthropic/claude-opus-4-6"],
+      },
+      userTimezone: "Europe/Lisbon",
+      timeFormat: "24",
+      heartbeat: {
+        every: "30m",
+        target: "last",
+        model: "anthropic/claude-haiku-4-5",
+      },
+      subagents: {
+        maxConcurrent: 4,
+        maxSpawnDepth: 2,
+        maxChildrenPerAgent: 5,
+        model: "anthropic/claude-sonnet-4-6",
+        thinking: "adaptive",
+        runTimeoutSeconds: 300,
+        archiveAfterMinutes: 60,
+      },
+      sandbox: {
+        mode: "non-main",
+        scope: "agent",
+      },
     },
-    "list": [
+
+    list: [
       {
-        "id": "atlas",
-        "default": true,
-        "workspace": "~/.openclaw/workspace",
-        "identity": {
-          "name": "ATLAS",
-          "emoji": "⚙️",
-          "theme": "Precision engineering meets strategic delivery"
-        }
+        id: "atlas",
+        default: true,
+        workspace: "~/.openclaw/workspace",
+        identity: { name: "ATLAS", emoji: "⚙️", theme: "Precision engineering meets strategic AI delivery" },
+        subagents: { allowAgents: ["*"] },
       },
       {
-        "id": "solutions-architect",
-        "workspace": "~/.openclaw/workspace-solutions-architect",
-        "model": "anthropic/claude-sonnet-4-6",
-        "identity": { "name": "Solutions Architect", "emoji": "🏗️" }
+        id: "solutions-architect",
+        workspace: "~/.openclaw/workspace-solutions-architect",
+        model: { primary: "anthropic/claude-sonnet-4-6" },
+        identity: { name: "Solutions Architect", emoji: "🏗️" },
+        tools: { deny: ["cron", "gateway"] },
       },
       {
-        "id": "tool-scout",
-        "workspace": "~/.openclaw/workspace-tool-scout",
-        "model": "anthropic/claude-sonnet-4-6",
-        "identity": { "name": "Tool Scout", "emoji": "🔭" }
+        id: "ai-engineer",
+        workspace: "~/.openclaw/workspace-ai-engineer",
+        model: { primary: "anthropic/claude-sonnet-4-6" },
+        identity: { name: "AI Engineer", emoji: "🤖" },
+        tools: { deny: ["cron", "gateway"] },
       },
       {
-        "id": "engineer-backend",
-        "workspace": "~/.openclaw/workspace-engineer-backend",
-        "model": "anthropic/claude-sonnet-4-6",
-        "identity": { "name": "Engineer (Backend)", "emoji": "⚡" }
+        id: "engineer-backend",
+        workspace: "~/.openclaw/workspace-engineer-backend",
+        model: { primary: "anthropic/claude-sonnet-4-6" },
+        identity: { name: "Engineer (Backend)", emoji: "⚡" },
+        tools: { deny: ["cron", "gateway"] },
       },
       {
-        "id": "engineer-frontend",
-        "workspace": "~/.openclaw/workspace-engineer-frontend",
-        "model": "anthropic/claude-sonnet-4-6",
-        "identity": { "name": "Engineer (Frontend)", "emoji": "🎨" }
+        id: "engineer-frontend",
+        workspace: "~/.openclaw/workspace-engineer-frontend",
+        model: { primary: "anthropic/claude-sonnet-4-6" },
+        identity: { name: "Engineer (Frontend)", emoji: "🎨" },
+        tools: { deny: ["cron", "gateway"] },
       },
       {
-        "id": "integration-specialist",
-        "workspace": "~/.openclaw/workspace-integration-specialist",
-        "model": "anthropic/claude-sonnet-4-6",
-        "identity": { "name": "Integration Specialist", "emoji": "🔗" }
+        id: "qa-engineer",
+        workspace: "~/.openclaw/workspace-qa-engineer",
+        model: { primary: "anthropic/claude-haiku-4-5-20251001" },
+        identity: { name: "QA Engineer", emoji: "🔍" },
+        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch"] },
       },
       {
-        "id": "qa-engineer",
-        "workspace": "~/.openclaw/workspace-qa-engineer",
-        "model": "anthropic/claude-haiku-4-5-20251001",
-        "identity": { "name": "QA Engineer", "emoji": "🔍" }
+        id: "devops-engineer",
+        workspace: "~/.openclaw/workspace-devops-engineer",
+        model: { primary: "anthropic/claude-sonnet-4-6" },
+        identity: { name: "DevOps Engineer", emoji: "🚀" },
+        tools: { deny: ["gateway"] },
       },
       {
-        "id": "security-engineer",
-        "workspace": "~/.openclaw/workspace-security-engineer",
-        "model": "anthropic/claude-sonnet-4-6",
-        "identity": { "name": "Security Engineer", "emoji": "🛡️" }
+        id: "security-engineer",
+        workspace: "~/.openclaw/workspace-security-engineer",
+        model: { primary: "anthropic/claude-sonnet-4-6" },
+        identity: { name: "Security Engineer", emoji: "🛡️" },
+        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch"] },
       },
       {
-        "id": "performance-engineer",
-        "workspace": "~/.openclaw/workspace-performance-engineer",
-        "model": "anthropic/claude-haiku-4-5-20251001",
-        "identity": { "name": "Performance Engineer", "emoji": "📊" }
+        id: "ui-ux-designer",
+        workspace: "~/.openclaw/workspace-ui-ux-designer",
+        model: { primary: "anthropic/claude-sonnet-4-6" },
+        identity: { name: "UI/UX Designer", emoji: "✨" },
+        tools: { deny: ["cron", "gateway", "exec"] },
       },
       {
-        "id": "devops-engineer",
-        "workspace": "~/.openclaw/workspace-devops-engineer",
-        "model": "anthropic/claude-sonnet-4-6",
-        "identity": { "name": "DevOps Engineer", "emoji": "🚀" }
+        id: "technical-writer",
+        workspace: "~/.openclaw/workspace-technical-writer",
+        model: { primary: "anthropic/claude-haiku-4-5-20251001" },
+        identity: { name: "Technical Writer", emoji: "📝" },
+        tools: { deny: ["cron", "gateway", "exec"] },
       },
       {
-        "id": "technical-writer",
-        "workspace": "~/.openclaw/workspace-technical-writer",
-        "model": "anthropic/claude-haiku-4-5-20251001",
-        "identity": { "name": "Technical Writer", "emoji": "📝" }
-      }
-    ]
+        id: "data-engineer",
+        workspace: "~/.openclaw/workspace-data-engineer",
+        model: { primary: "anthropic/claude-haiku-4-5-20251001" },
+        identity: { name: "Data Engineer", emoji: "🔢" },
+        tools: { deny: ["cron", "gateway"] },
+      },
+    ],
   },
-  "gateway": {
-    "port": 18789,
-    "auth": {
-      "token": "REPLACE_WITH_GENERATED_TOKEN"
-    }
+
+  tools: {
+    exec: { host: "sandbox", ask: "on-miss", security: "allowlist" },
+    subagents: { tools: { deny: ["gateway", "cron"] } },
+    sessions: { visibility: "tree" },
   },
-  "exec": {
-    "security": "allowlist",
-    "ask": "on-miss"
-  }
+
+  logging: { redactSensitive: "tools" },
 }

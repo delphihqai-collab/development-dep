@@ -19,6 +19,9 @@
 ## Demo Flow
 1. [Step — what is shown and what it demonstrates]
 
+## AI-Specific Demo Notes
+[Which AI features demonstrated. Expected behaviour. Known limitations to avoid. Confidence ranges.]
+
 ## Known Limitations
 [Where the prospect should not probe deeply.]
 

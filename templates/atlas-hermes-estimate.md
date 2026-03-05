@@ -12,18 +12,21 @@
 **IN SCOPE** / **OUT OF SCOPE** / **PARTIALLY IN SCOPE**
 
 ## Architecture Overview
-[High-level approach — components, integration points, technology candidates.]
+[High-level approach — components, AI pipeline design, integration points, technology selections.]
 
 ## Effort Estimate
-| Component | Effort | Agents Required |
+| Component | Effort (optimistic/expected/pessimistic) | Agents Required |
 |---|---|---|
-| [Component] | [X days/weeks] | [Roles] |
-| **Total** | **[X]** | |
+| [Component] | [X/Y/Z days] | [Roles] |
+| **Total** | **[X/Y/Z days]** | |
 
 ## Timeline
 - **Earliest start:** [Date]
-- **Estimated delivery:** [Date]
+- **Estimated delivery:** [Date range]
 - **Confidence:** HIGH / MEDIUM / LOW
+
+## AI-Specific Considerations
+[Model requirements, evaluation criteria, data dependencies, monitoring needs, expected accuracy ranges.]
 
 ## Technical Constraints
 [Limitations, dependencies, platform constraints.]
