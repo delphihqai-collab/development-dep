@@ -25,7 +25,7 @@ Built following OpenClaw multi-agent best practices and expert agent design patt
 ### Agent Files (per agent in agents/)
 Each agent has: SOUL.md, AGENTS.md, IDENTITY.md, USER.md, TOOLS.md
 
-**Critical insight**: Sub-agents only receive AGENTS.md and TOOLS.md. All operational logic must be self-sufficient in those two files.
+**Critical insight**: Standalone agents only see files in their own workspace (AGENTS.md, TOOLS.md, and other per-agent files). They do not see root governance files. All operational logic must be self-sufficient in each agent's workspace.
 
 ### Team
 | Agent | Model | Role |
@@ -53,4 +53,5 @@ chmod +x deploy.sh
 - **Added 3 roles**: AI Engineer (core), UI/UX Designer (essential), Data Engineer (per-project)
 - **Expanded 3 roles**: QA → AI evaluation, DevOps → LLMOps, Security → AI safety
 - **Model strategy**: Sonnet for judgement-heavy roles, Haiku for structured/repeatable, heartbeats on Haiku to save costs
-- **Sub-agent config**: maxSpawnDepth: 2, maxConcurrent: 4, adaptive thinking, 5-min timeout
+- **Standalone agents**: 10 independent agents, each with own workspace, identity, and tool permissions. Coordinated by ATLAS via comms/ directories.
+- **Ephemeral sub-agents**: maxSpawnDepth: 2, maxConcurrent: 8, adaptive thinking, timeout per task complexity
