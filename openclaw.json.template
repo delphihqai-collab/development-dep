@@ -21,13 +21,15 @@
         target: "last",
         model: "anthropic/claude-haiku-4-5",
       },
+      // Subagent config governs ATLAS's ephemeral children only.
+      // Standalone agents have sessions_spawn denied and cannot spawn sub-agents.
       subagents: {
-        maxConcurrent: 4,
+        maxConcurrent: 8,
         maxSpawnDepth: 2,
         maxChildrenPerAgent: 5,
         model: "anthropic/claude-sonnet-4-6",
         thinking: "adaptive",
-        runTimeoutSeconds: 300,
+        runTimeoutSeconds: 600,
         archiveAfterMinutes: 60,
       },
       sandbox: {
@@ -49,70 +51,70 @@
         workspace: "~/.openclaw/workspace-solutions-architect",
         model: { primary: "anthropic/claude-sonnet-4-6" },
         identity: { name: "Solutions Architect", emoji: "🏗️" },
-        tools: { deny: ["cron", "gateway"] },
+        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
       },
       {
         id: "ai-engineer",
         workspace: "~/.openclaw/workspace-ai-engineer",
         model: { primary: "anthropic/claude-sonnet-4-6" },
         identity: { name: "AI Engineer", emoji: "🤖" },
-        tools: { deny: ["cron", "gateway"] },
+        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
       },
       {
         id: "engineer-backend",
         workspace: "~/.openclaw/workspace-engineer-backend",
         model: { primary: "anthropic/claude-sonnet-4-6" },
         identity: { name: "Engineer (Backend)", emoji: "⚡" },
-        tools: { deny: ["cron", "gateway"] },
+        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
       },
       {
         id: "engineer-frontend",
         workspace: "~/.openclaw/workspace-engineer-frontend",
         model: { primary: "anthropic/claude-sonnet-4-6" },
         identity: { name: "Engineer (Frontend)", emoji: "🎨" },
-        tools: { deny: ["cron", "gateway"] },
+        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
       },
       {
         id: "qa-engineer",
         workspace: "~/.openclaw/workspace-qa-engineer",
         model: { primary: "anthropic/claude-haiku-4-5-20251001" },
         identity: { name: "QA Engineer", emoji: "🔍" },
-        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch"] },
+        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch", "sessions_spawn"] },
       },
       {
         id: "devops-engineer",
         workspace: "~/.openclaw/workspace-devops-engineer",
         model: { primary: "anthropic/claude-sonnet-4-6" },
         identity: { name: "DevOps Engineer", emoji: "🚀" },
-        tools: { deny: ["gateway"] },
+        tools: { deny: ["gateway", "sessions_spawn"] },
       },
       {
         id: "security-engineer",
         workspace: "~/.openclaw/workspace-security-engineer",
         model: { primary: "anthropic/claude-sonnet-4-6" },
         identity: { name: "Security Engineer", emoji: "🛡️" },
-        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch"] },
+        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch", "sessions_spawn"] },
       },
       {
         id: "ui-ux-designer",
         workspace: "~/.openclaw/workspace-ui-ux-designer",
         model: { primary: "anthropic/claude-sonnet-4-6" },
         identity: { name: "UI/UX Designer", emoji: "✨" },
-        tools: { deny: ["cron", "gateway", "exec"] },
+        tools: { deny: ["cron", "gateway", "exec", "sessions_spawn"] },
       },
       {
         id: "technical-writer",
         workspace: "~/.openclaw/workspace-technical-writer",
         model: { primary: "anthropic/claude-haiku-4-5-20251001" },
         identity: { name: "Technical Writer", emoji: "📝" },
-        tools: { deny: ["cron", "gateway", "exec"] },
+        tools: { deny: ["cron", "gateway", "exec", "sessions_spawn"] },
       },
       {
         id: "data-engineer",
         workspace: "~/.openclaw/workspace-data-engineer",
         model: { primary: "anthropic/claude-haiku-4-5-20251001" },
         identity: { name: "Data Engineer", emoji: "🔢" },
-        tools: { deny: ["cron", "gateway"] },
+        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
       },
     ],
   },
@@ -121,6 +123,14 @@
     exec: { host: "sandbox", ask: "on-miss", security: "allowlist" },
     subagents: { tools: { deny: ["gateway", "cron"] } },
     sessions: { visibility: "tree" },
+  },
+
+  bindings: {
+    // Placeholder: define key bindings for agent actions
+  },
+
+  mcpServers: {
+    // Placeholder: define MCP server connections
   },
 
   logging: { redactSensitive: "tools" },
