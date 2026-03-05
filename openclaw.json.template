@@ -1,0 +1,95 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "~/.openclaw/workspace",
+      "model": "anthropic/claude-sonnet-4-6",
+      "userTimezone": "Europe/Lisbon",
+      "timeFormat": "24",
+      "heartbeat": {
+        "prompt": "Run your heartbeat routine as defined in HEARTBEAT.md."
+      }
+    },
+    "list": [
+      {
+        "id": "atlas",
+        "default": true,
+        "workspace": "~/.openclaw/workspace",
+        "identity": {
+          "name": "ATLAS",
+          "emoji": "⚙️",
+          "theme": "Precision engineering meets strategic delivery"
+        }
+      },
+      {
+        "id": "solutions-architect",
+        "workspace": "~/.openclaw/workspace-solutions-architect",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": { "name": "Solutions Architect", "emoji": "🏗️" }
+      },
+      {
+        "id": "tool-scout",
+        "workspace": "~/.openclaw/workspace-tool-scout",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": { "name": "Tool Scout", "emoji": "🔭" }
+      },
+      {
+        "id": "engineer-backend",
+        "workspace": "~/.openclaw/workspace-engineer-backend",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": { "name": "Engineer (Backend)", "emoji": "⚡" }
+      },
+      {
+        "id": "engineer-frontend",
+        "workspace": "~/.openclaw/workspace-engineer-frontend",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": { "name": "Engineer (Frontend)", "emoji": "🎨" }
+      },
+      {
+        "id": "integration-specialist",
+        "workspace": "~/.openclaw/workspace-integration-specialist",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": { "name": "Integration Specialist", "emoji": "🔗" }
+      },
+      {
+        "id": "qa-engineer",
+        "workspace": "~/.openclaw/workspace-qa-engineer",
+        "model": "anthropic/claude-haiku-4-5-20251001",
+        "identity": { "name": "QA Engineer", "emoji": "🔍" }
+      },
+      {
+        "id": "security-engineer",
+        "workspace": "~/.openclaw/workspace-security-engineer",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": { "name": "Security Engineer", "emoji": "🛡️" }
+      },
+      {
+        "id": "performance-engineer",
+        "workspace": "~/.openclaw/workspace-performance-engineer",
+        "model": "anthropic/claude-haiku-4-5-20251001",
+        "identity": { "name": "Performance Engineer", "emoji": "📊" }
+      },
+      {
+        "id": "devops-engineer",
+        "workspace": "~/.openclaw/workspace-devops-engineer",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": { "name": "DevOps Engineer", "emoji": "🚀" }
+      },
+      {
+        "id": "technical-writer",
+        "workspace": "~/.openclaw/workspace-technical-writer",
+        "model": "anthropic/claude-haiku-4-5-20251001",
+        "identity": { "name": "Technical Writer", "emoji": "📝" }
+      }
+    ]
+  },
+  "gateway": {
+    "port": 18789,
+    "auth": {
+      "token": "REPLACE_WITH_GENERATED_TOKEN"
+    }
+  },
+  "exec": {
+    "security": "allowlist",
+    "ask": "on-miss"
+  }
+}
