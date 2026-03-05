@@ -14,7 +14,7 @@ ATLAS_WS="$OPENCLAW_DIR/workspace"
 echo "[1/3] Deploying ATLAS workspace → $ATLAS_WS"
 mkdir -p "$ATLAS_WS/memory" "$ATLAS_WS/templates" "$ATLAS_WS/docs" "$ATLAS_WS/skills"
 
-for f in AGENTS.md SOUL.md IDENTITY.md USER.md TOOLS.md HEARTBEAT.md MEMORY.md GUARDRAILS.md ESCALATION-POLICY.md HANDOFF-PROTOCOL.md ERROR-HANDLING.md EVALUATION-CRITERIA.md; do
+for f in AGENTS.md SOUL.md IDENTITY.md USER.md TOOLS.md HEARTBEAT.md MEMORY.md GUARDRAILS.md ESCALATION-POLICY.md HANDOFF-PROTOCOL.md ERROR-HANDLING.md EVALUATION-CRITERIA.md BOOTSTRAP.md DELEGATION-POLICY.md DOMAIN-KNOWLEDGE.md AUDIT-LOG-POLICY.md; do
   if [ -f "$REPO_DIR/$f" ]; then
     cp "$REPO_DIR/$f" "$ATLAS_WS/$f"
     echo "  ✓ $f"
@@ -35,8 +35,17 @@ AGENTS="solutions-architect ai-engineer engineer-backend engineer-frontend qa-en
 for agent in $AGENTS; do
   AGENT_WS="$OPENCLAW_DIR/workspace-$agent"
   if [ -d "$REPO_DIR/agents/$agent" ]; then
-    mkdir -p "$AGENT_WS"
+    # Create agent workspace directories
+    mkdir -p "$AGENT_WS/memory" "$AGENT_WS/skills" "$AGENT_WS/templates" "$AGENT_WS/comms/inbox" "$AGENT_WS/comms/outbox"
+
+    # Copy all markdown files from agent root
     cp "$REPO_DIR/agents/$agent/"*.md "$AGENT_WS/" 2>/dev/null || true
+
+    # Copy templates if they exist
+    if [ -d "$REPO_DIR/agents/$agent/templates" ] && [ "$(ls -A "$REPO_DIR/agents/$agent/templates/" 2>/dev/null)" ]; then
+      cp "$REPO_DIR/agents/$agent/templates/"* "$AGENT_WS/templates/" 2>/dev/null || true
+    fi
+
     echo "  ✓ $agent → $AGENT_WS"
   fi
 done
