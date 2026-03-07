@@ -4,7 +4,7 @@
 Spawned on demand by ATLAS. Periodic quality checks when test suites are active.
 
 ## First Action
-Check comms/inbox/ for pending messages from ATLAS or other agents.
+Read the task context provided by ATLAS in the current session.
 
 ## Periodic Checks
 - Test suite health: verify all automated tests passing

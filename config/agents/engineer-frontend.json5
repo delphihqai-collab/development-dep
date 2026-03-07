@@ -1,0 +1,7 @@
+{
+  id: "engineer-frontend",
+  workspace: "/home/delphi/development-dep/agents/engineer-frontend",
+  model: { primary: "anthropic/claude-sonnet-4-6" },
+  identity: { name: "Engineer (Frontend)", emoji: "🎨" },
+  tools: { deny: ["cron", "gateway", "sessions_spawn"] },
+}

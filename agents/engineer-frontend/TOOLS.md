@@ -1,32 +1,36 @@
 # Tools & Infrastructure
 
 ## Available Tools
+
 | Tool | When to Use | Constraints |
 |------|-------------|-------------|
-| read | Read workspace files, component specs, design tokens, and project docs | Primary information source |
-| exec | Run build, test, lint, browser testing, and performance profiling | Allowlist security; confirm before unknown commands |
-| write/edit | Create and modify frontend components, styles, configs, and tests | All output in workspace |
-| memory_search | Find relevant past context, prior component designs, and UI patterns | Use before starting new tasks |
+| read | Read workspace files, component specs, design tokens, design handoffs, and code | Primary information source |
+| write/edit | Create and modify frontend components, styles, configs, tests, and page specs | All output in workspace |
+| exec | Run build, test, lint, dev server, browser testing, and performance profiling | Allowlist security; confirm before unknown commands |
+| memory_search | Find prior component designs, UI patterns, performance baselines, and project context | Use before starting new tasks |
 
 ## Denied Tools
+
 | Tool | Reason |
 |------|--------|
-| cron | Scheduled tasks not required for frontend engineering role; denied by policy |
-| gateway | External network gateway access denied by policy |
-| sessions_spawn | Only ATLAS spawns ephemeral sub-agents. Request parallel work from ATLAS if needed. |
+| cron | Scheduled tasks not required for frontend engineering role |
+| gateway | Gateway configuration access denied by policy |
+| sessions_spawn | Only ATLAS spawns sub-agents; request parallel work from ATLAS |
 
 ## Infrastructure
+
 - **Platform:** OpenClaw on PC1
 - **Git repo:** delphihqai-collab/development-dep
-- **Communication:** All communication routed through ATLAS. No direct channel access.
-- **File output:** All deliverables placed in workspace for ATLAS to review.
-- **Browser testing:** Via exec for headless browser and component testing
+- **Communication:** Tasks received from ATLAS via `sessions_send`. All deliverables placed in workspace.
 - **Component dev server:** Local development server via exec
-- **Performance profiling:** Lighthouse, bundle analysis, and profiling tools via exec
+- **Browser testing:** Headless browser and component testing via exec
+- **Performance profiling:** Lighthouse, bundle analysis, and Core Web Vitals via exec
+- **Templates:** Use templates/ for component specs, page specs
 
 ## Tool Rules
+
 - NEVER store secrets in files, logs, or documentation
-- Use exec for build, test, and lint workflows
-- Component testing before page composition
-- Performance profiling before submission
+- ALWAYS test components in isolation before composing into pages
+- ALWAYS verify accessibility (WCAG AA) before submission
+- ALWAYS compare implementation to design spec side-by-side
 - When blocked on tool access, report to ATLAS immediately

@@ -1,0 +1,7 @@
+{
+  id: "devops-engineer",
+  workspace: "/home/delphi/development-dep/agents/devops-engineer",
+  model: { primary: "anthropic/claude-sonnet-4-6" },
+  identity: { name: "DevOps Engineer", emoji: "🚀" },
+  tools: { deny: ["gateway", "sessions_spawn"] },
+}

@@ -1,0 +1,7 @@
+{
+  id: "technical-writer",
+  workspace: "/home/delphi/development-dep/agents/technical-writer",
+  model: { primary: "anthropic/claude-haiku-4-5-20251001" },
+  identity: { name: "Technical Writer", emoji: "📝" },
+  tools: { deny: ["cron", "gateway", "exec", "sessions_spawn"] },
+}

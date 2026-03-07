@@ -1,0 +1,7 @@
+{
+  id: "ui-ux-designer",
+  workspace: "/home/delphi/development-dep/agents/ui-ux-designer",
+  model: { primary: "anthropic/claude-sonnet-4-6" },
+  identity: { name: "UI/UX Designer", emoji: "✨" },
+  tools: { deny: ["cron", "gateway", "exec", "sessions_spawn"] },
+}

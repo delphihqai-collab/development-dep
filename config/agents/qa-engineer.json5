@@ -1,0 +1,7 @@
+{
+  id: "qa-engineer",
+  workspace: "/home/delphi/development-dep/agents/qa-engineer",
+  model: { primary: "anthropic/claude-haiku-4-5-20251001" },
+  identity: { name: "QA Engineer", emoji: "🔍" },
+  tools: { deny: ["cron", "gateway", "sessions_spawn"] },
+}

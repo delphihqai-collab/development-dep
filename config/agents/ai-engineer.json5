@@ -1,0 +1,7 @@
+{
+  id: "ai-engineer",
+  workspace: "/home/delphi/development-dep/agents/ai-engineer",
+  model: { primary: "anthropic/claude-sonnet-4-6" },
+  identity: { name: "AI Engineer", emoji: "🤖" },
+  tools: { deny: ["cron", "gateway", "sessions_spawn"] },
+}

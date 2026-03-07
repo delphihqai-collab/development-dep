@@ -1,0 +1,7 @@
+{
+  id: "atlas",
+  default: true,
+  workspace: "/home/delphi/development-dep",
+  identity: { name: "ATLAS", emoji: "⚙️", theme: "Precision engineering meets strategic AI delivery" },
+  subagents: { allowAgents: ["*"] },
+}

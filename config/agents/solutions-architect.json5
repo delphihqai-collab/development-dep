@@ -1,0 +1,7 @@
+{
+  id: "solutions-architect",
+  workspace: "/home/delphi/development-dep/agents/solutions-architect",
+  model: { primary: "anthropic/claude-sonnet-4-6" },
+  identity: { name: "Solutions Architect", emoji: "🏗️" },
+  tools: { deny: ["cron", "gateway", "sessions_spawn"] },
+}

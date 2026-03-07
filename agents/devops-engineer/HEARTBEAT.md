@@ -4,7 +4,7 @@
 Spawned on demand by ATLAS. Periodic health checks when infrastructure is active.
 
 ## First Action
-Check comms/inbox/ for pending messages from ATLAS or other agents.
+Read the task context provided by ATLAS in the current session.
 
 ## Periodic Checks
 - Infrastructure health: verify all deployed services responding

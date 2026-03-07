@@ -1,0 +1,7 @@
+{
+  id: "engineer-backend",
+  workspace: "/home/delphi/development-dep/agents/engineer-backend",
+  model: { primary: "anthropic/claude-sonnet-4-6" },
+  identity: { name: "Engineer (Backend)", emoji: "⚡" },
+  tools: { deny: ["cron", "gateway", "sessions_spawn"] },
+}

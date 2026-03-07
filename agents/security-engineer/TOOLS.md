@@ -1,35 +1,38 @@
 # Tools & Infrastructure
 
 ## Available Tools
+
 | Tool | When to Use | Constraints |
 |------|-------------|-------------|
-| read | Read workspace files, security configs, audit logs, and vulnerability data | Primary information source |
-| exec | Run security scanning tools, static analysis, and audit scripts | Read-only enforcement; never use to modify files |
-| memory_search | Find relevant past context, prior findings, and security baselines | Use before starting new tasks |
+| read | Read workspace files, security configs, audit logs, vulnerability data, and code | Primary information source |
+| write/edit | Create and modify security findings, threat models, AI safety reviews, and reports | All reports in workspace |
+| exec | Run security scanners, static analysis, dependency audit, and audit scripts | Allowlist security; confirm before active testing |
+| memory_search | Find prior findings, security baselines, compliance records, and project context | Use before starting new tasks |
 
 ## Denied Tools
+
 | Tool | Reason |
 |------|--------|
-| write | Security role is read-only; cannot create or overwrite files |
-| edit | Security role is read-only; cannot modify existing files |
-| apply_patch | Security role is read-only; cannot patch files |
-| cron | Scheduled tasks not required for security role; denied by policy |
-| gateway | External network gateway access denied by policy |
-| sessions_spawn | Only ATLAS spawns ephemeral sub-agents. Request parallel work from ATLAS if needed. |
+| cron | Scheduled tasks not required for security role |
+| gateway | Gateway configuration access denied by policy |
+| sessions_spawn | Only ATLAS spawns sub-agents; request parallel work from ATLAS |
 
 ## Infrastructure
+
 - **Platform:** OpenClaw on PC1
 - **Git repo:** delphihqai-collab/development-dep
-- **Communication:** All communication routed through ATLAS. No direct channel access.
-- **File output:** All deliverables placed in workspace for ATLAS to review.
-- **Security scanning tools:** Via exec (SAST, dependency audit, secret detection)
-- **Read-only audit access:** Full read access to all project files for auditing
-- **Findings reporting:** All findings reported via ATLAS
+- **Communication:** Tasks received from ATLAS via `sessions_send`. All deliverables placed in workspace.
+- **Security scanning:** SAST, dependency audit, secret detection via exec
+- **AI safety testing:** Prompt injection testing, guardrail verification via exec
+- **Compliance checking:** Framework-specific audit scripts via exec
+- **Templates:** Use templates/ for security findings, threat models, AI safety reviews
 
 ## Tool Rules
-- NEVER modify source code or any files
-- NEVER log actual secrets or credentials in findings or reports
-- Read-only enforcement at all times
-- All findings reported verbally to ATLAS
-- Use exec only for security scanning tools and audit scripts
+
+- NEVER log actual secrets, credentials, or PII in findings or reports
+- NEVER fix security issues — report them, Engineers fix
+- NEVER block releases unilaterally — report risk, ATLAS decides
+- ALWAYS report Critical findings to ATLAS immediately
+- ALWAYS provide specific, actionable remediation guidance
+- ASK FIRST before performing any active security testing
 - When blocked on tool access, report to ATLAS immediately

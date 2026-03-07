@@ -5,21 +5,83 @@
     bind: "loopback",
     auth: { mode: "token", token: "REPLACE_WITH_GENERATED_TOKEN" },
     reload: { mode: "hybrid" },
+    usage: { enabled: true },
+  },
+
+  // Model provider auth — Anthropic Max subscription via setup-token.
+  // Run `openclaw setup-token` to configure subscription auth.
+  models: {
+    providers: {
+      anthropic: {
+        auth: { mode: "setup-token" },
+      },
+      // Fallback: OpenRouter routes to same models via different infrastructure.
+      // Set OPENROUTER_API_KEY env var.
+      openrouter: {
+        apiKey: { source: "env", provider: "default", id: "OPENROUTER_API_KEY" },
+      },
+    },
   },
 
   agents: {
     defaults: {
-      workspace: "~/.openclaw/workspace",
+      workspace: "/home/delphi/development-dep",
       model: {
         primary: "anthropic/claude-sonnet-4-6",
-        fallbacks: ["anthropic/claude-opus-4-6"],
+        fallbacks: [
+          "anthropic/claude-opus-4-6",
+          "openrouter/anthropic/claude-sonnet-4-6",
+          "openrouter/anthropic/claude-haiku-4-5",
+        ],
+      },
+      models: {
+        "anthropic/claude-opus-4-6": { alias: "opus" },
+        "anthropic/claude-sonnet-4-6": { alias: "sonnet" },
+        "anthropic/claude-haiku-4-5-20251001": { alias: "haiku" },
       },
       userTimezone: "Europe/Lisbon",
       timeFormat: "24",
+      maxConcurrent: 3,
+      // thinkingDefault: "adaptive", // not supported in v2026.2.26
       heartbeat: {
         every: "30m",
         target: "last",
-        model: "anthropic/claude-haiku-4-5",
+        model: "anthropic/claude-haiku-4-5-20251001",
+      },
+      compaction: {
+        reserveTokensFloor: 20000,
+        identifierPolicy: "strict",
+        postCompactionSections: [
+          "Mission",
+          "Priorities",
+          "Rules of Engagement",
+          "Process Guardrails",
+          "Escalation Policy",
+          "Domain Knowledge",
+        ],
+        memoryFlush: {
+          enabled: true,
+          softThresholdTokens: 4000,
+          systemPrompt: "Session nearing compaction. Store durable memories and project state now.",
+          prompt: "Write lasting notes to memory/YYYY-MM-DD.md. Reply NO_REPLY if nothing to store.",
+        },
+      },
+      contextPruning: {
+        mode: "cache-ttl",
+        ttl: "5m",
+        keepLastAssistants: 3,
+      },
+      memorySearch: {
+        enabled: true,
+        // provider defaults to built-in embeddings
+        query: {
+          hybrid: {
+            enabled: true,
+            vectorWeight: 0.7,
+            textWeight: 0.3,
+            temporalDecay: { enabled: true, halfLifeDays: 30 },
+          },
+        },
       },
       // Subagent config governs ATLAS's ephemeral children only.
       // Standalone agents have sessions_spawn denied and cannot spawn sub-agents.
@@ -39,98 +101,89 @@
     },
 
     list: [
-      {
-        id: "atlas",
-        default: true,
-        workspace: "~/.openclaw/workspace",
-        identity: { name: "ATLAS", emoji: "⚙️", theme: "Precision engineering meets strategic AI delivery" },
-        subagents: { allowAgents: ["*"] },
-      },
-      {
-        id: "solutions-architect",
-        workspace: "~/.openclaw/workspace-solutions-architect",
-        model: { primary: "anthropic/claude-sonnet-4-6" },
-        identity: { name: "Solutions Architect", emoji: "🏗️" },
-        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
-      },
-      {
-        id: "ai-engineer",
-        workspace: "~/.openclaw/workspace-ai-engineer",
-        model: { primary: "anthropic/claude-sonnet-4-6" },
-        identity: { name: "AI Engineer", emoji: "🤖" },
-        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
-      },
-      {
-        id: "engineer-backend",
-        workspace: "~/.openclaw/workspace-engineer-backend",
-        model: { primary: "anthropic/claude-sonnet-4-6" },
-        identity: { name: "Engineer (Backend)", emoji: "⚡" },
-        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
-      },
-      {
-        id: "engineer-frontend",
-        workspace: "~/.openclaw/workspace-engineer-frontend",
-        model: { primary: "anthropic/claude-sonnet-4-6" },
-        identity: { name: "Engineer (Frontend)", emoji: "🎨" },
-        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
-      },
-      {
-        id: "qa-engineer",
-        workspace: "~/.openclaw/workspace-qa-engineer",
-        model: { primary: "anthropic/claude-haiku-4-5-20251001" },
-        identity: { name: "QA Engineer", emoji: "🔍" },
-        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch", "sessions_spawn"] },
-      },
-      {
-        id: "devops-engineer",
-        workspace: "~/.openclaw/workspace-devops-engineer",
-        model: { primary: "anthropic/claude-sonnet-4-6" },
-        identity: { name: "DevOps Engineer", emoji: "🚀" },
-        tools: { deny: ["gateway", "sessions_spawn"] },
-      },
-      {
-        id: "security-engineer",
-        workspace: "~/.openclaw/workspace-security-engineer",
-        model: { primary: "anthropic/claude-sonnet-4-6" },
-        identity: { name: "Security Engineer", emoji: "🛡️" },
-        tools: { deny: ["cron", "gateway", "write", "edit", "apply_patch", "sessions_spawn"] },
-      },
-      {
-        id: "ui-ux-designer",
-        workspace: "~/.openclaw/workspace-ui-ux-designer",
-        model: { primary: "anthropic/claude-sonnet-4-6" },
-        identity: { name: "UI/UX Designer", emoji: "✨" },
-        tools: { deny: ["cron", "gateway", "exec", "sessions_spawn"] },
-      },
-      {
-        id: "technical-writer",
-        workspace: "~/.openclaw/workspace-technical-writer",
-        model: { primary: "anthropic/claude-haiku-4-5-20251001" },
-        identity: { name: "Technical Writer", emoji: "📝" },
-        tools: { deny: ["cron", "gateway", "exec", "sessions_spawn"] },
-      },
-      {
-        id: "data-engineer",
-        workspace: "~/.openclaw/workspace-data-engineer",
-        model: { primary: "anthropic/claude-haiku-4-5-20251001" },
-        identity: { name: "Data Engineer", emoji: "🔢" },
-        tools: { deny: ["cron", "gateway", "sessions_spawn"] },
-      },
+      { "$include": "./config/agents/atlas.json5" },
+      { "$include": "./config/agents/solutions-architect.json5" },
+      { "$include": "./config/agents/ai-engineer.json5" },
+      { "$include": "./config/agents/engineer-backend.json5" },
+      { "$include": "./config/agents/engineer-frontend.json5" },
+      { "$include": "./config/agents/qa-engineer.json5" },
+      { "$include": "./config/agents/devops-engineer.json5" },
+      { "$include": "./config/agents/security-engineer.json5" },
+      { "$include": "./config/agents/ui-ux-designer.json5" },
+      { "$include": "./config/agents/technical-writer.json5" },
+      { "$include": "./config/agents/data-engineer.json5" },
     ],
   },
 
+  session: {
+    dmScope: "per-channel-peer",
+    reset: {
+      mode: "daily",
+      atHour: 4,
+      idleMinutes: 120,
+    },
+    maintenance: {
+      mode: "enforce",
+      pruneAfter: "30d",
+      maxEntries: 500,
+    },
+  },
+
   tools: {
-    exec: { host: "sandbox", ask: "on-miss", security: "allowlist" },
+    exec: { ask: "on-miss", security: "allowlist" },
+    browser: { enabled: true },
+    agentToAgent: {
+      enabled: true,
+      allow: [
+        "atlas",
+        "solutions-architect",
+        "ai-engineer",
+        "engineer-backend",
+        "engineer-frontend",
+        "qa-engineer",
+        "devops-engineer",
+        "security-engineer",
+        "ui-ux-designer",
+        "technical-writer",
+        "data-engineer",
+      ],
+    },
     subagents: { tools: { deny: ["gateway", "cron"] } },
     sessions: { visibility: "tree" },
   },
 
-  bindings: {
-    // Placeholder: define key bindings for agent actions
+  hooks: {
+    internal: {
+      enabled: true,
+      entries: {
+        "session-memory": { enabled: true },
+        "command-logger": { enabled: true },
+        "boot-md": { enabled: true },
+      },
+    },
   },
 
+  cron: {
+    enabled: true,
+    maxConcurrentRuns: 1,
+    sessionRetention: "24h",
+  },
+
+  bindings: {
+    // All messages route to ATLAS (default agent). ATLAS delegates to specialists.
+    // Add channel-specific bindings here if direct routing to agents is needed.
+  },
+
+  // MCP servers — uncomment and configure as integrations are set up
+  // mcp: {
+  //   servers: [
+  //     { name: "github", url: "https://mcp.github.com/sse", description: "GitHub code access" },
+  //     { name: "google-workspace", url: "https://mcp.google.com/sse", description: "Google Docs, Calendar" },
+  //   ],
+  // },
+
   mcpServers: {
-    // Placeholder: define MCP server connections
+    // Legacy placeholder — use mcp.servers above when ready
   },
 
   logging: { redactSensitive: "tools" },
