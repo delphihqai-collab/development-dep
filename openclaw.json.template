@@ -159,6 +159,7 @@
         "session-memory": { enabled: true },
         "command-logger": { enabled: true },
         "boot-md": { enabled: true },
+        "bootstrap-extra-files": { enabled: true },
       },
     },
   },
